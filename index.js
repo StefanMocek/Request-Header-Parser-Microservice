@@ -1,8 +1,7 @@
-
 require('dotenv').config();
 var express = require('express');
 var app = express();
-const ip = require("ip")
+const whoamiRouter = require("./routes/whoami")
 
 var cors = require('cors');
 app.use(cors({optionsSuccessStatus: 200}));
@@ -15,22 +14,9 @@ app.get("/", function (req, res) {
 });
 
 
-app.get("/api/whoami", (req,res)=>{
-  let ipValue = ip.address();
-  let jezyk = req.headers['accept-language'];
-  let soft = req.headers['user-agent']
-  console.log(ipValue, jezyk, soft)
-  res.json({"ipaddress": ipValue, "language": jezyk, "software": soft})
-})
+app.use("/api/whoami", whoamiRouter)
 
 
 var listener = app.listen(process.env.PORT || 3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
-
-
-// const parseIp = (req) =>
-// req.headers['x-forwarded-for']?.split(',').shift()
-// || req.socket?.remoteAddress
-
-// console.log(parseIp(req))
